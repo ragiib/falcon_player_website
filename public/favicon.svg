@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108">
+  <defs>
+    <!-- Background: matches ic_launcher_background.xml radial gradient -->
+    <radialGradient id="bg" cx="54" cy="50" r="72" gradientUnits="userSpaceOnUse">
+      <stop offset="0"    stop-color="#1F1F26"/>
+      <stop offset="0.65" stop-color="#121216"/>
+      <stop offset="1"    stop-color="#0A0A0C"/>
+    </radialGradient>
+    <!-- Body gradient: matches ic_launcher_foreground.xml linear gradient -->
+    <linearGradient id="body" x1="38" y1="30" x2="86" y2="54" gradientUnits="userSpaceOnUse">
+      <stop offset="0"   stop-color="#FF3843"/>
+      <stop offset="0.5" stop-color="#E50914"/>
+      <stop offset="1"   stop-color="#B80710"/>
+    </linearGradient>
+    <clipPath id="shape">
+      <rect width="108" height="108" rx="24"/>
+    </clipPath>
+  </defs>
+  <!-- Background -->
+  <rect width="108" height="108" rx="24" fill="url(#bg)"/>
+  <!-- Foreground (verbatim from ic_launcher_foreground.xml) -->
+  <g clip-path="url(#shape)">
+    <!-- Wing Feather 1 -->
+    <path d="M30,34 L48,30 L40,42 L26,42 Z" fill="#B3121C"/>
+    <!-- Wing Feather 2 -->
+    <path d="M26,45 L44,43 L36,54 L22,54 Z" fill="#D81722"/>
+    <!-- Wing Feather 3 -->
+    <path d="M28,57 L44,55 L38,66 L24,66 Z" fill="#960E16"/>
+    <!-- Falcon body / beak -->
+    <path d="M38,30 L74,48 L86,54 L74,60 L38,78 L48,54 Z" fill="url(#body)"/>
+    <!-- Beak edge highlight -->
+    <path d="M48,35 L86,54 L52,54 Z" fill="#ffffff" fill-opacity="0.15"/>
+    <!-- Falcon eye -->
+    <path d="M52,47 L60,51 L52,54 L54,50 Z" fill="#ffffff" fill-opacity="0.92"/>
+    <!-- Lower shadow -->
+    <path d="M48,54 L86,54 L74,60 L48,68 Z" fill="#000" fill-opacity="0.10"/>
+  </g>
+</svg>

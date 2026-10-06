@@ -1,0 +1,16 @@
+# Personal media files (do not commit)
+images/
+public/screens/
+
+# Build and dependencies
+node_modules/
+dist/
+.astro/
+
+# Environment and IDE
+.env
+.env.*
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

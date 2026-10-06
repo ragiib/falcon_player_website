@@ -1,0 +1,208 @@
+---
+import { APK_URL, APK_SIZE_MB, INSTALL_STEPS } from "../config/site";
+---
+
+<section id="download" class="download-section" aria-labelledby="download-heading">
+  <div class="container">
+    <div class="download-header">
+      <span class="section-tag">Direct Install</span>
+      <h2 id="download-heading" class="section-title">Install in under a minute.</h2>
+      <p class="section-sub">
+        Falcon Player is distributed as a clean, standalone APK directly from GitHub releases without Google Play tracking or bloat.
+      </p>
+    </div>
+
+    <!-- 4 Step Cards Grid -->
+    <div class="steps-grid" role="list" aria-label="Installation steps">
+      {INSTALL_STEPS.map((step) => (
+        <div class="install-step-card" role="listitem">
+          <div class="step-card-header">
+            <span class="step-number" aria-hidden="true">{step.number}</span>
+            <div class="step-icon-wrap" aria-hidden="true">
+              <span class="step-dot"></span>
+            </div>
+          </div>
+          <h3 class="step-title">{step.title}</h3>
+          <p class="step-desc">{step.description}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Direct Download Helper Card -->
+    <div class="download-fallback-card">
+      <div class="fallback-copy">
+        <p class="fallback-title">Ready to get started?</p>
+        <p class="fallback-detail">Standalone package: falcon_player.apk ({APK_SIZE_MB} MB) · Zero telemetry</p>
+      </div>
+      <a href={APK_URL} class="btn btn-primary" data-download-btn aria-label="Download Falcon Player APK package">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="7 10 12 15 17 10" />
+          <line x1="12" y1="15" x2="12" y2="3" />
+        </svg>
+        <span class="btn-label">Download APK ({APK_SIZE_MB} MB)</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .download-section {
+    position: relative;
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-20);
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .download-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 640px;
+    margin-bottom: var(--space-10);
+    gap: var(--space-2);
+  }
+
+  .section-tag {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-brand);
+  }
+
+  .section-title {
+    font-size: var(--text-h2);
+    line-height: var(--leading-h2);
+    letter-spacing: var(--tracking-h2);
+  }
+
+  .section-sub {
+    font-size: var(--text-lead);
+    color: var(--color-muted);
+    line-height: var(--leading-normal);
+    margin-top: var(--space-2);
+  }
+
+  /* Steps Grid */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+  }
+
+  .install-step-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-6);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    transition:
+      border-color var(--transition-normal),
+      box-shadow var(--transition-normal),
+      transform var(--transition-fast);
+  }
+
+  .install-step-card:hover {
+    border-color: var(--color-hairline-strong);
+    transform: translateY(-2px);
+  }
+
+  .step-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-5);
+  }
+
+  .step-number {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--color-brand);
+    letter-spacing: -0.02em;
+  }
+
+  .step-icon-wrap {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: var(--color-surface-hover);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--color-muted);
+  }
+
+  .step-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+    color: var(--color-ink);
+  }
+
+  .step-desc {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    line-height: 1.5;
+  }
+
+  /* Direct Download Fallback banner */
+  .download-fallback-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    padding: var(--space-6) var(--space-8);
+    background-color: var(--color-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .fallback-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--color-ink);
+    margin-bottom: 2px;
+  }
+
+  .fallback-detail {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+
+  /* Responsive layout */
+  @media (max-width: 1024px) {
+    .steps-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .steps-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .download-fallback-card {
+      flex-direction: column;
+      align-items: stretch;
+      padding: var(--space-5);
+    }
+
+    .download-fallback-card .btn {
+      width: 100%;
+    }
+  }
+</style>

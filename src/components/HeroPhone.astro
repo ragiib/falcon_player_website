@@ -1,0 +1,320 @@
+---
+import { SCREENS } from "../config/site";
+---
+
+<div class="hero-phone-stage" id="phone-stage">
+  <!-- Dynamic Ambient Glow behind Phone -->
+  <div class="ambient-glow" id="ambient-glow" style={`--current-glow: ${SCREENS[0].glowColor || 'rgba(229, 15, 30, 0.35)'};`}></div>
+
+  <!-- 3D Tilt Wrapper (Transforms applied here) -->
+  <div class="phone-tilt-wrapper" id="phone-tilt-wrapper">
+    <div class="phone-frame" id="phone-frame">
+      <!-- Metallic bezel rim layers -->
+      <div class="bezel-inner">
+        <!-- Punch-hole camera & top speaker -->
+        <div class="phone-speaker" aria-hidden="true"></div>
+        <div class="phone-camera" aria-hidden="true"></div>
+
+        <!-- Screen stack -->
+        <div class="screen-viewport">
+          <div class="screen-stack" id="screen-stack">
+            {SCREENS.map((screen, index) => (
+              <img
+                src={screen.src}
+                alt={screen.alt}
+                width="540"
+                height="1170"
+                loading={index === 0 ? "eager" : "lazy"}
+                fetchpriority={index === 0 ? "high" : "auto"}
+                class={`screen-img ${index === 0 ? "is-active" : ""}`}
+                data-screen-index={index}
+                data-screen-id={screen.id}
+                data-glow={screen.glowColor}
+                data-caption={screen.caption}
+              />
+            ))}
+          </div>
+        </div>
+
+        <!-- Specular light glint -->
+        <div class="specular-glint" id="specular-glint" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controls: Glass Pill Switcher -->
+  <div class="switcher-wrapper">
+    <div class="glass-switcher" role="group" aria-label="Screenshot selector" id="phone-switcher">
+      {SCREENS.map((screen, index) => (
+        <button
+          type="button"
+          class={`switch-btn ${index === 0 ? "is-active" : ""}`}
+          data-switch-to={index}
+          data-screen-id={screen.id}
+          aria-pressed={index === 0 ? "true" : "false"}
+        >
+          {screen.label}
+        </button>
+      ))}
+    </div>
+
+    <!-- Active Screen Live Caption -->
+    <p class="screen-caption" id="phone-caption" aria-live="polite">
+      {SCREENS[0].caption}
+    </p>
+  </div>
+</div>
+
+<style>
+  .hero-phone-stage {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 440px;
+    margin: 0 auto;
+    perspective: 1200px;
+  }
+
+  /* Ambient radial glow */
+  .ambient-glow {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    width: 320px;
+    height: 480px;
+    transform: translate(-50%, -10%);
+    border-radius: 50%;
+    background: radial-gradient(circle at center, var(--current-glow) 0%, rgba(229, 15, 30, 0.04) 55%, transparent 75%);
+    filter: blur(54px);
+    opacity: 0.8;
+    pointer-events: none;
+    z-index: 0;
+    transition: background 600ms cubic-bezier(0.16, 1, 0.3, 1), opacity 400ms ease;
+  }
+
+  /* Tilt wrapper */
+  .phone-tilt-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 340px;
+    transform-style: preserve-3d;
+    cursor: grab;
+  }
+
+  /* Only promote to GPU layer on hover (desktop fine-pointer) to avoid
+     wasting VRAM on mobile where the tilt animation never runs */
+  @media (hover: hover) and (pointer: fine) {
+    .phone-tilt-wrapper:hover {
+      will-change: transform;
+    }
+  }
+
+  /* Phone physical frame */
+  .phone-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 540 / 1170;
+    border-radius: var(--radius-phone);
+    background: linear-gradient(150deg, #3d3534 0%, #1c1818 25%, #100e0e 65%, #342c2c 100%);
+    padding: 10px;
+    box-shadow:
+      var(--shadow-phone),
+      inset 0 1px 1px rgba(255, 255, 255, 0.3),
+      inset 0 -2px 3px rgba(0, 0, 0, 0.9),
+      0 0 0 1px rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+  }
+
+  .bezel-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 34px;
+    background: #000000;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.06);
+  }
+
+  /* Hardware cutouts */
+  .phone-speaker {
+    position: absolute;
+    top: 7px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 48px;
+    height: 3.5px;
+    background: #231f1f;
+    border-radius: 4px;
+    z-index: 20;
+    pointer-events: none;
+  }
+
+  .phone-camera {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 13px;
+    height: 13px;
+    background: #060606;
+    border: 1.5px solid #1c1919;
+    border-radius: 50%;
+    z-index: 20;
+    pointer-events: none;
+    box-shadow: inset 0 0 2px #000;
+  }
+
+  /* Screen stack */
+  .screen-viewport {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #0c0b0b;
+  }
+
+  .screen-stack {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .screen-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: translateX(12px) scale(0.995);
+    transition:
+      opacity 450ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .screen-img.is-active {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    pointer-events: auto;
+    z-index: 2;
+  }
+
+  .screen-img.was-previous {
+    opacity: 0;
+    transform: translateX(-12px) scale(0.995);
+    z-index: 1;
+  }
+
+  /* Specular glint */
+  .specular-glint {
+    position: absolute;
+    inset: 0;
+    border-radius: 34px;
+    background: radial-gradient(circle 280px at var(--glint-x, 50%) var(--glint-y, 50%), rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.02) 40%, transparent 70%);
+    opacity: var(--glint-opacity, 0);
+    pointer-events: none;
+    z-index: 15;
+    mix-blend-mode: screen;
+    transition: opacity 280ms ease;
+  }
+
+  /* Glass pill switcher */
+  .switcher-wrapper {
+    position: relative;
+    z-index: 10;
+    margin-top: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+  }
+
+  .glass-switcher {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 4px;
+    background-color: var(--color-glass);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-full);
+    box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.5);
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .glass-switcher::-webkit-scrollbar {
+    display: none;
+  }
+
+  .switch-btn {
+    padding: 7px 14px;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-muted);
+    border-radius: var(--radius-full);
+    transition:
+      color var(--transition-fast),
+      background-color var(--transition-fast),
+      box-shadow var(--transition-fast),
+      transform var(--transition-fast);
+    min-height: 40px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  .switch-btn:hover {
+    color: var(--color-ink);
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .switch-btn.is-active {
+    color: var(--color-ink);
+    background-color: var(--color-surface-hover);
+    border: 1px solid var(--color-hairline-strong);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+    font-weight: 600;
+  }
+
+  .screen-caption {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    text-align: center;
+    min-height: 24px;
+    max-width: 380px;
+    line-height: var(--leading-normal);
+    transition: opacity 200ms ease;
+  }
+
+  @media (max-width: 640px) {
+    .phone-tilt-wrapper {
+      max-width: 290px;
+    }
+
+    .phone-frame {
+      border-radius: 36px;
+      padding: 8px;
+    }
+
+    .bezel-inner {
+      border-radius: 28px;
+    }
+
+    .switch-btn {
+      padding: 6px 11px;
+      font-size: 0.8125rem;
+    }
+  }
+</style>

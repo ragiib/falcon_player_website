@@ -1,0 +1,127 @@
+---
+import { REPO_URL, RELEASES_URL, MIN_ANDROID, VERSION, SITE_NAME } from "../config/site";
+import FalconLogo from "./FalconLogo.astro";
+---
+
+<footer class="site-footer">
+  <div class="container footer-container">
+    <div class="footer-meta">
+      <div class="footer-brand">
+        <span class="footer-logo-mark" aria-hidden="true">
+          <FalconLogo size={22} />
+        </span>
+        <span class="footer-brand-title">{SITE_NAME}</span>
+        <span class="footer-brand-ver">v{VERSION}</span>
+      </div>
+      <p class="footer-compat">
+        Requires Android {MIN_ANDROID} or newer.
+      </p>
+    </div>
+
+    <div class="footer-links">
+      <a href={REPO_URL} target="_blank" rel="noopener noreferrer" class="footer-link">
+        <span>Source Code</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M7 17L17 7M17 7H8M17 7V16" />
+        </svg>
+      </a>
+      <a href={RELEASES_URL} target="_blank" rel="noopener noreferrer" class="footer-link">
+        <span>GitHub Releases</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M7 17L17 7M17 7H8M17 7V16" />
+        </svg>
+      </a>
+      <a href="#download" class="footer-link">Install Guide</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    padding-top: var(--space-12);
+    padding-bottom: calc(var(--space-16) + 40px); /* Space for mobile bottom bar */
+    border-top: 1px solid var(--color-hairline);
+    background-color: var(--color-bg);
+  }
+
+  .footer-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
+
+  .footer-meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .footer-logo-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .footer-brand-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-ink);
+  }
+
+  .footer-brand-ver {
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    background: var(--color-surface);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-hairline);
+  }
+
+  .footer-compat {
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+  }
+
+  .footer-links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+  }
+
+  .footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    transition: color var(--transition-fast);
+    min-height: 44px;
+  }
+
+  .footer-link:hover {
+    color: var(--color-ink);
+  }
+
+  @media (max-width: 640px) {
+    .footer-container {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-6);
+    }
+
+    .footer-links {
+      gap: var(--space-4);
+    }
+  }
+</style>
